@@ -1,11 +1,16 @@
 \documentclass{article}
+
+\usepackage{amsmath}
+\newtheorem{theorem}{Theorem}
+
+
 \title{Numerical Methods Notes}
 \author{Mudream}
 \date{\today}
 \begin{document}
     \maketitle
     \part{Floating Point Operation}
-        \section{Normalize representation}
+        \section{Normalize Representation}
 
         Let a floating point system with base $\beta$, precision $p$, 
         exponent range $[e_{\min}, e_{\max}]\cap\textbf{Z}$. Then a number in this 
@@ -20,7 +25,70 @@
 
         Note that this respresentation cannot represent $0$,
         since $a$ should always larger than $1$.
-        The natural representation for $0$ is $1.0 \times \beta^{\min - 1}$
+        The natural representation for $0$ is $1.0 \times \beta^{e_{\min} - 1}$.
+
+        \section{Relative Errors and Unit of the Last Place(ulps)}
+
+        ulps, unit of the last place for short, use as a unit for representing error.
+        A system's ulps is $\beta^{-p+1}$.
+
+        Now we estimate the largest error on when we use a system to represent a number $r$:
+
+        \[ 
+            E(r) = \min|a\times\beta^c - r|
+        \]
+
+        Assume $r = d_0.d_1d_2 \dots d_{p-1}d_p \dots \times \beta^c$,
+        we choose $s = d_0.d_1d_2 \dots d_{p-2}k \times \beta^c$,
+        where $k = d_{p-1}$ if $0.d_p \dots < \frac{\beta}{2}$ 
+        otherwise $k = d_{p-1} + 1$. Therefore $E(r)$ is bounded by $\frac{\beta}{2}\beta^{-p}\beta^c$.
+
+        Relative error is also be bounded:
+        \[
+            \frac{E(r)}{r} \leq \frac{E(r)}{\beta^c} = \frac{\beta^{-p+1}}{2}
+        \]
+        
+        This bound called machine epsilon $\epsilon = \frac{\beta^{-p+1}}{2}$.
+
+        \section{Guard Digits}
+
+        When we try to use computer $x - y$,
+        \textbf{compute and then round} is a method with less error. For example ($p = 3, \beta = 10$):
+        
+        \begin{align}
+            x     &= 2.1500000000 \\
+            y     &= 0.0000000125 \\
+            x - y &= 2.1499999875 
+        \end{align}
+
+        Round to $2.15$.
+
+        On the other hand, \textbf{round and then compute}
+        method can get same answer in more elegent way.
+
+        \begin{align}
+            x     &= 2.15 \\
+            y     &= 0.00 \\
+            x - y &= 2.15 
+        \end{align}
+
+        However, in some cases, \textbf{round and then compute}
+        can cause large relative error.
+
+        \begin{align}
+            x      &= 1.00  \\
+            y      &= 0.999 \\
+            y'     &= 0.99  \\
+            x - y' &= 0.01  \\
+            x - y  &= 0.001
+        \end{align}
+
+        Relaive Error = $\frac{|0.01 - 0.001|}{0.001}$ = 9.
+
+        \begin{theorem}
+            Using $p$ digits with base $\beta$ for $x-y$, the relative error
+            can be as large as $\beta - 1$.
+        \end{theorem}
         
 \end{document}
 
