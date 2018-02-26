@@ -1,4 +1,26 @@
 \documentclass{article}
+\title{Numerical Methods Notes}
+\author{Mudream}
+\date{\today}
 \begin{document}
-    Hello, world!
+    \maketitle
+    \part{Floating Point Operation}
+        \section{Normalize representation}
+
+        Let a floating point system with base $\beta$, precision $p$, 
+        exponent range $[e_{\min}, e_{\max}]\cap\textbf{Z}$. Then a number in this 
+        floating point system can be represented in 
+        \textbf{normalize representation}: $a \times \beta^c$.
+        For example : 
+        
+        \begin{enumerate}
+            \item $0.1 = 1.00 \times 10^{-1}$ ($\beta = 10$, $p = 3$)
+            \item $0.1 \approx 1.1001 \times 2^{-4}$ ($\beta = 2$, $p = 5$)
+        \end{enumerate}
+
+        Note that this respresentation cannot represent $0$,
+        since $a$ should always larger than $1$.
+        The natural representation for $0$ is $1.0 \times \beta^{\min - 1}$
+        
 \end{document}
+
