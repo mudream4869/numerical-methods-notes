@@ -1,6 +1,8 @@
 \documentclass{article}
 
 \usepackage{amsmath}
+\usepackage{amsthm}
+
 \newtheorem{theorem}{Theorem}
 
 
@@ -89,6 +91,29 @@
             Using $p$ digits with base $\beta$ for $x-y$, the relative error
             can be as large as $\beta - 1$.
         \end{theorem}
+
+        Large errors occur if x and y are close, and \textbf{single guard digit}
+        can porevent this situation:
+        {\it $p$ increased by 1 in the device for addition and subtraction.}
+
+        
+        \begin{theorem}
+            Using $p+1$ digits for $x-y$ $\Rightarrow$ relative error $ < 2\epsilon$
+        \end{theorem}
+
+        \begin{proof}
+            Let $y'$ be truncated $y$, $\delta = E(x - y')$.
+
+            \emph{Case 1: $x - y' \geq 1$}
+
+                $x - y = (x - y') - (y - y') \geq 1 + \beta^p - \beta^p = 1$
+
+            \emph{Case 2: $x - y' < 1$}
+
+                $\delta = 0$
+
+        \end{proof}
+
         
 \end{document}
 
