@@ -85,7 +85,7 @@
             x - y  &= 0.001
         \end{align}
 
-        Relaive Error = $\frac{|0.01 - 0.001|}{0.001}$ = 9.
+        Relaive Error = $\frac{|0.01 - 0.001|}{0.001} = 9$.
 
         \begin{theorem}
             Using $p$ digits with base $\beta$ for $x-y$, the relative error
@@ -114,6 +114,54 @@
 
         \end{proof}
 
+        \section{Cancellation}
+
+        Consider $a = 1.22, b = 3.34, c = 2.28$, then $b^2 - 4ac = 0.0292$.
+
+        But
+        
+        \begin{align}
+            b^2       &\approx 11.1 \\
+            4ac       &\approx 11.2 \\
+            b^2 - 4ac &\approx  0.1
+        \end{align}
+
+        When we calculate $b^2 - 4ac$, $b^2$ and $4ac$ are already contain error,
+        which causes a large error. This situation called \textbf{Catastrophic cancellation}.
+
+        How to avoid \textbf{Catastrophic cancellation} ?
+
+        \subsection{$\frac{-b + \sqrt{b^2 - 4ac}}{4ac}$}
+
+        When $b > 0, b^2 \gg 4ac$, then $\sqrt{b^2 - 4ac} - b \approx 0$.
+        By reformulate it, we can get $\frac{2c}{- b - \sqrt{b^2 - 4ac}}$,
+        which has less Catastrophic cancellation.
+
+        Note that we might not be able to remove all Catastrophic cancellation.
+
+        \subsection{$x^2 - y^2$}
+
+        When $x$ and $y$ are close, $(x-y)(x+y)$ is better than $x^2 - y^2$.
+        
+        \section{Rounding}
+
+        Computing the nearest value are usually accurate.
+        For instance, $1.4$ round to $1$ and  $1.6$ round to $2$.
+
+        \begin{theorem}
+            Let $x_0$ = $x$, $x_1 = (x_0-y)+y$, $\dots$ , $x_n = (x_{n-1}-y)+y$.
+            If $+$ and $-$ operation use rounding even, then
+            $x_i = x_0 \ \forall \ i \in [1, n]$ or 
+            $x_i = x_1 \ \forall \ i \in [1, n]$
+        \end{theorem}
+
+        \section{IEEE Standard}
+
+        How to choose $\beta$ and $p$ ?
+
+        \begin{enumerate}
+            \item $\beta = 16, p = 1 \Rightarrow \epsilon = \frac{16}{2}16^{-1} = \frac{1}{2}$ 
+            \item $\beta = 2, p = 4 \Rightarrow \epsilon = \frac{2}{2}2^{-4} = \frac{1}{16}$ 
+        \end{enumerate}
         
 \end{document}
-
