@@ -1,0 +1,217 @@
+\section{Normalize Representation}
+
+Let a floating point system with base $\beta$, precision $p$, 
+exponent range $[e_{\min}, e_{\max}]\cap\textbf{Z}$. Then a number in this 
+floating point system can be represented in 
+\textbf{normalize representation}: $a \times \beta^c$.
+For example : 
+
+\begin{enumerate}
+    \item $0.1 = 1.00 \times 10^{-1}$ ($\beta = 10$, $p = 3$)
+    \item $0.1 \approx 1.1001 \times 2^{-4}$ ($\beta = 2$, $p = 5$)
+\end{enumerate}
+
+Note that this respresentation cannot represent $0$,
+since $a$ should always larger than $1$.
+The natural representation for $0$ is $1.0 \times \beta^{e_{\min} - 1}$.
+
+\section{Relative Errors and Unit of the Last Place(ulps)}
+
+ulps, unit of the last place for short, use as a unit for representing error.
+A system's ulps is $\beta^{-p+1}$.
+
+Now we estimate the largest error on when we use a system to represent a number $r$:
+
+\[ 
+    E(r) = \min|a\times\beta^c - r|
+\]
+
+Assume $r = d_0.d_1d_2 \dots d_{p-1}d_p \dots \times \beta^c$,
+we choose $s = d_0.d_1d_2 \dots d_{p-2}k \times \beta^c$,
+where $k = d_{p-1}$ if $0.d_p \dots < \frac{\beta}{2}$ 
+otherwise $k = d_{p-1} + 1$. Therefore $E(r)$ is bounded by $\frac{\beta}{2}\beta^{-p}\beta^c$.
+
+Relative error is also be bounded:
+\[
+    \frac{E(r)}{r} \leq \frac{E(r)}{\beta^c} = \frac{\beta^{-p+1}}{2}
+\]
+
+This bound called machine epsilon $\epsilon = \frac{\beta^{-p+1}}{2}$.
+
+\section{Guard Digits}
+
+When we try to use computer $x - y$,
+\textbf{compute and then round} is a method with less error. For example ($p = 3, \beta = 10$):
+
+\begin{align}
+    x     &= 2.1500000000 \nonumber \\
+    y     &= 0.0000000125 \nonumber \\
+    x - y &= 2.1499999875 \nonumber
+\end{align}
+
+Round to $2.15$.
+
+On the other hand, \textbf{round and then compute}
+method can get same answer in more elegent way.
+
+\begin{align}
+    x     &= 2.15 \nonumber \\
+    y     &= 0.00 \nonumber \\
+    x - y &= 2.15 \nonumber
+\end{align}
+
+However, in some cases, \textbf{round and then compute}
+can cause large relative error.
+
+\begin{align}
+    x      &= 1.00  \nonumber \\
+    y      &= 0.999 \nonumber \\
+    y'     &= 0.99  \nonumber \\
+    x - y' &= 0.01  \nonumber \\
+    x - y  &= 0.001 \nonumber
+\end{align}
+
+Relaive Error = $\frac{|0.01 - 0.001|}{0.001} = 9$.
+
+\begin{theorem}
+    Using $p$ digits with base $\beta$ for $x-y$, the relative error
+    can be as large as $\beta - 1$.
+\end{theorem}
+
+Large errors occur if x and y are close, and \textbf{single guard digit}
+can porevent this situation:
+{\it $p$ increased by 1 in the device for addition and subtraction.}
+
+
+\begin{theorem}
+    Using $p+1$ digits for $x-y$ $\Rightarrow$ relative error $ < 2\epsilon$
+\end{theorem}
+
+\begin{proof}
+    Let $y'$ be truncated $y$, $\delta = E(x - y')$.
+
+    \emph{Case 1: $x - y' \geq 1$}
+
+        $x - y = (x - y') - (y - y') \geq 1 + \beta^p - \beta^p = 1$
+
+    \emph{Case 2: $x - y' < 1$}
+
+        $\delta = 0$
+
+\end{proof}
+
+\section{Cancellation}
+
+Consider $a = 1.22, b = 3.34, c = 2.28$, then $b^2 - 4ac = 0.0292$.
+
+But
+
+\begin{align}
+    b^2       &\approx 11.1 \nonumber \\
+    4ac       &\approx 11.2 \nonumber \\
+    b^2 - 4ac &\approx  0.1 \nonumber
+\end{align}
+
+When we calculate $b^2 - 4ac$, $b^2$ and $4ac$ are already contain error,
+which causes a large error. This situation called \textbf{Catastrophic cancellation}.
+
+How to avoid \textbf{Catastrophic cancellation} ?
+
+\subsection{$\frac{-b + \sqrt{b^2 - 4ac}}{4ac}$}
+
+When $b > 0, b^2 \gg 4ac$, then $\sqrt{b^2 - 4ac} - b \approx 0$.
+By reformulate it, we can get $\frac{2c}{- b - \sqrt{b^2 - 4ac}}$,
+which has less Catastrophic cancellation.
+
+Note that we might not be able to remove all Catastrophic cancellation.
+
+\subsection{$x^2 - y^2$}
+
+When $x$ and $y$ are close, $(x-y)(x+y)$ is better than $x^2 - y^2$.
+
+\section{Rounding}
+
+Computing the nearest value are usually accurate.
+For instance, $1.4$ round to $1$ and  $1.6$ round to $2$.
+
+\begin{theorem}
+    Let $x_0$ = $x$, $x_1 = (x_0-y)+y$, $\dots$ , $x_n = (x_{n-1}-y)+y$.
+    If $+$ and $-$ operation use rounding even, then
+    $x_i = x_0 \ \forall \ i \in [1, n]$ or 
+    $x_i = x_1 \ \forall \ i \in [1, n]$
+\end{theorem}
+
+\section{IEEE Standard}
+
+How to choose $\beta$ and $p$ ?
+
+\begin{enumerate}
+    \item $\beta = 16, p = 1 \Rightarrow \epsilon = \frac{16}{2}16^{-1} = \frac{1}{2}$ 
+    \item $\beta = 2, p = 4 \Rightarrow \epsilon = \frac{2}{2}2^{-4} = \frac{1}{16}$ 
+\end{enumerate}
+
+\section{Special Quantities}
+
+\subsection{Infinity}
+
+Consider \textbf{Infinity Arthmetic}: $+0$, $-0$, $+\infty$, $-\infty$.
+These thing is to represent something is too large or too small such that
+the floating point representation in the machine cannot respresent.
+Calculation rule is following the limit calculation, for example:
+$\lim_{x \rightarrow +0} \frac{1}{x} = +\infty$.
+
+\subsection{Not a Number}
+For something calculation we don't have a real number for it, we would use {\it Nan}.
+For example :
+
+\begin{align}
+    \sqrt{-4} &= \it{Nan}       \nonumber \\
+    \infty - \infty &= \it{Nan} \nonumber
+\end{align}
+
+\subsection{$+0$ and $-0$}
+
+IEEE defines $+0 = -0$. This definition do have some pros.
+However it still causes some problem:
+
+\[
+    \log x = 
+    \left \{
+        \begin{matrix}
+            -\infty   & x = +0  \\
+            \it{Nan} & x = -0  \\
+        \end{matrix}
+    \right.
+\]
+
+and $+0 = -0$ while $\frac{1}{+0} \neq \frac{1}{-0}$.
+
+\subsection{Denormalized number}
+
+For smaller number : $0.d_1d_2 \dots \times 2^{e_{\min}}$.
+
+\section{Handle the exception or trap}
+
+Sometimes, we want to handle the number when special quantities appear rather than let it go.
+The compiler should give programmer this option :
+\textbf{Use Special Number} or \textbf{Trap}.
+
+\begin{center}
+    \begin{tabular}{ | l | l |}
+        \hline
+        Stituation & No exception  \\ \hline
+        overflow   & $\pm \infty$  \\ \hline
+        underflow  & 0             \\ \hline
+        $/0$       & $\infty$      \\ \hline
+        invalid    & {\it Nan}     \\ \hline 
+        inexact    & round(x)      \\ \hline
+    \end{tabular}
+\end{center}
+
+\subsection{Example : Power Function}
+When $n < 0$, calculate pow(x, -n) or pow(1/x, n).
+Choose the result which didn't trigger overflow or underflow execption.
+
+\subsection{Example : Calculate arccos}
+
+
