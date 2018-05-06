@@ -79,3 +79,32 @@ For instance :
         1 & 0 \\
     \end{bmatrix}
 \]
+
+\section{Cholesky Factorization}
+
+\begin{theorem}
+    A symmetric matrix is Positive Definite $\Leftrightarrow$
+    $A = LL^T$ for some lower traingular matrix $L$
+\end{theorem}
+
+\begin{proof}
+Now we try to prove forward part, While $\dim(A) = 1$ is ok. Assume $\dim(A) = n > 1$,
+
+\[
+    A = 
+    \begin{bmatrix}
+        \alpha & v \\
+        v^T    & LL^T \\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \sqrt\alpha & 0 \\
+        \frac{v^T}{\sqrt\alpha}    & L \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        \sqrt\alpha & \frac{v}{\sqrt\alpha} \\
+        0           & L^T \\
+    \end{bmatrix}
+\]
+  
+\end{proof}
