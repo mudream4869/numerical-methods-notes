@@ -1,4 +1,58 @@
-\section{LU Factorization}
+\section{Part4}
 
-\subsection{l-norms}
+\subsection{Norms of Vector and Matrix}
 
+A \textbf{norm} should satisfy three
+
+\begin{align}
+    \Vert A \Vert &\geq 0 \nonumber \\
+    \Vert A \Vert + \Vert B \Vert &\geq \Vert A+B \Vert \nonumber \\
+    \Vert \alpha A \Vert &= |\alpha| \Vert A \Vert \nonumber
+\end{align}
+
+For example, there are some norms for vector
+\begin{enumerate}
+  \item 2-norm of $\mathbf{R} ^ 2$ :
+    $\Vert (x, y) \Vert = \sqrt{x^2 + y^2}$
+  \item p-norm of $\mathbf{R} ^ n$ :
+    $\Vert x \Vert = \left( \sum_{i=1}^{n} x_i^p \right)^\frac{1}{p}$
+  \item max-norm of $\mathbf{R} ^ n$ :
+    $\Vert x \Vert = \max_i |x_i|$ 
+\end{enumerate}
+
+Note that when $p < 1$, $p-norm$ is not a \textbf{norm}.
+
+Actually we can define matrix norm to be a "long-vector" norm,
+but it didn't preserve some special property of the matrix.
+
+A matrix norm usually define as $\max_{\Vert v\Vert} \Vert Av \Vert$,
+and the norm do have some great property in linear system.
+Consider $Ax = b$, we slightly modify RHS and obtain
+$A(x + \delta x) = b + \delta b$.
+
+\begin{align}
+    \Vert \delta x\Vert = \Vert A^{-1}b \Vert &\leq \Vert A^{-1} \Vert \Vert \delta b \Vert \nonumber \\
+    \Vert b\Vert = \Vert Ax \Vert &\leq \Vert A \Vert \Vert x \Vert \nonumber
+\end{align}
+
+Combine and we can get
+
+\[
+  \frac{\Vert \delta x \Vert}{\Vert x \Vert} \leq \Vert A \Vert \Vert A^{-1} \Vert
+                                                  \frac{\Vert \delta b \Vert}{\Vert b\Vert}
+\]
+
+Or we can slightly modify LHS :
+$(A + \delta A)(x + \delta x) = b$.
+
+\begin{align}
+  &\delta x = -A^{-1}\delta A(x + \delta x) \nonumber \\
+  &\Rightarrow \Vert x \Vert \leq
+    \Vert A^{-1} \Vert \Vert \delta A \Vert \Vert x + \delta x \Vert \nonumber \\
+  &\Rightarrow \frac{\Vert x \Vert}{\Vert x + \delta x \Vert} \leq
+    \Vert A \Vert \Vert A^{-1} \Vert \frac{\Vert \delta A \Vert}{\Vert A \Vert} \nonumber
+\end{align}
+
+and $\Vert A \Vert \Vert A^{-1} \Vert$ call \textbf{condition} of $A$
+
+\subsection{Iterative Method for Linear System}
