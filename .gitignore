@@ -1,4 +1,12 @@
+# Temp file
+
+*~
+*.~
+
 # === pdflatex ===
 
 *.log
 *.aux
+
+# hw folder
+hw/
