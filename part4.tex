@@ -5,9 +5,9 @@
 A \textbf{norm} should satisfy three
 
 \begin{align}
-    \Vert A \Vert &\geq 0 \nonumber \\
-    \Vert A \Vert + \Vert B \Vert &\geq \Vert A+B \Vert \nonumber \\
-    \Vert \alpha A \Vert &= |\alpha| \Vert A \Vert \nonumber
+  \Vert A \Vert &\geq 0 \nonumber \\
+  \Vert A \Vert + \Vert B \Vert &\geq \Vert A+B \Vert \nonumber \\
+  \Vert \alpha A \Vert &= |\alpha| \Vert A \Vert \nonumber
 \end{align}
 
 For example, there are some norms for vector
@@ -56,3 +56,38 @@ $(A + \delta A)(x + \delta x) = b$.
 and $\Vert A \Vert \Vert A^{-1} \Vert$ call \textbf{condition} of $A$
 
 \subsection{Iterative Method for Linear System}
+
+Consider linear system in $\mathbf{R}^n$ $Ax = b$,
+the Gaussian elimination should take $O(n^3)$ time. 
+We will try to use iterative approach to solve linear system.
+When we have a \textbf{solution},
+we hope to calculate a more accurate \textbf{solution} by previous \textbf{solution}.
+The time $O(iteration\ time \times iterate\ calculation)$ should be smaller than $O(n^3)$
+
+\subsubsection{Jacobi and Gauss-Seidel Method}
+
+Jacobi Method take $O(n^2)$ in every iteration, $O(n)$ for each dim in vector:
+
+\newcommand{\diag}{\mathop{\mathrm{diag}}}
+
+\[
+  \diag(A)x_{i+1} = (\diag(A) - A)x_i
+\]
+
+For example, dim 3 should be :
+
+\begin{align}
+  (x_1)_{i+1} &= \frac{A_{12}(x_2)_i + A_{13}(x_3)_i}{A_{11}} \nonumber \\
+  (x_2)_{i+1} &= \frac{A_{21}(x_1)_i + A_{23}(x_3)_i}{A_{22}} \nonumber \\
+  (x_3)_{i+1} &= \frac{A_{31}(x_1)_i + A_{32}(x_2)_i}{A_{33}} \nonumber
+\end{align}
+
+Gauss-Seidel change the used previous vector to on-going updating solution.
+
+\begin{align}
+  (x_1)_{i+1} &= \frac{A_{12}(x_2)_i + A_{13}(x_3)_i}{A_{11}} \nonumber \\
+  (x_2)_{i+1} &= \frac{A_{21}(x_1)_{i+1} + A_{23}(x_3)_i}{A_{22}} \nonumber \\
+  (x_3)_{i+1} &= \frac{A_{31}(x_1)_{i+1} + A_{32}(x_2)_{i+1}}{A_{33}} \nonumber
+\end{align}
+
+Note that the iteration might diverge.
