@@ -91,3 +91,16 @@ Gauss-Seidel change the used previous vector to on-going updating solution.
 \end{align}
 
 Note that the iteration might diverge.
+
+\subsubsection{Conjugate Gradient Method}
+
+Now we approach the target by mininizing another
+function $\min_x f(x) = \min_x \frac{1}{2}x^TAx - b^Tx$.
+If we apply gradient descent, we could find out that
+the descent direction should be $-\nabla f(x)$.
+Then we mininize length parameter $\alpha$ in $x - x_k = - \alpha \nabla f(x)$.
+This is a simple one-variable two-dimension optimization.
+
+\[
+  \alpha = \frac{r^T(b-Ax)}{r^TAr}
+\]
