@@ -102,5 +102,46 @@ Then we mininize length parameter $\alpha$ in $x - x_k = - \alpha \nabla f(x)$.
 This is a simple one-variable two-dimension optimization.
 
 \[
-  \alpha = \frac{r^T(b-Ax)}{r^TAr}
+  \alpha = \frac{|b-Ax|^2}{(b-Ax)^TA(b-Ax)}
+\]
+
+Note that if $A$ is positive definite, then $x^TAx \neq 0 \ \forall x$.
+
+The algorithm might be \textbf{very slow}.
+
+Now we want to use other descent direction $\{p_i\}$
+such that $x_n = x_0 span\{p_i\}_{i=1 \dots n}$.
+So the function to be mininize become
+
+\[
+  \min_{y_{1 \dots n-1}, \alpha} f(x_0 + \sum{y_ip_i}  + \alpha p_n)
+\]
+
+Rewrite $\sum{y_ip_i} = P_{n-1}y$.
+
+\[
+  \min_{y, \alpha} f(x_0 + P_{n-1}y + \alpha p_n)
+\]
+
+Notice that if $p_i \in span\{Ap_i\}_{i=1 \dots n}^\perp$,
+we can split the function and the problem become easier.
+
+\begin{align}
+  x_n &= \arg\min f(x_n) \nonumber \\
+      &= \min_y f(x_0 + P_{n-1}y) +
+         \min_\alpha (-\alpha p_n^Tr_0 + \frac{\alpha^2}{2}p_k^TAp_k) \nonumber \\
+      &= x_{n-1} + \dots \nonumber
+\end{align}
+
+The constraint $span\{Ap_i\}^\perp$ is still loose,
+so we limit it by minimize $|p - (b - Ax_{n-1}| = |p - r_{n-1}|$.
+
+\[
+  p_n = \min_{p \in span\{Ap_{i}\}^\perp} |p - r_{n-1}|
+\]
+
+(TODO)
+
+\[
+  p_n \in span \{ r_{n-1}, p_{n-1}\}
 \]
