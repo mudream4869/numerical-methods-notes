@@ -1,0 +1,76 @@
+\section{Nonlinear Equation of One Variable}
+
+Given a one-var continuous function, find a root of it.
+
+\subsection{Bisection Method}
+
+When $f(a)f(b) < 0$, there should be a root $\in (a, b)$.
+By trying sign of $f(a)f(\frac{a+b}{2})$ and $f(\frac{a+b}{2})f(b)$,
+we can try root's range.
+
+\subsection{Newtons Method}
+
+Try to iterate to $f(x) = 0$.
+
+\begin{align}
+  &\frac{f(x) - f(x_i)}{x - x_i} = f'(x_i) \nonumber \\
+  &\Rightarrow x_{i+1} = x_i - \frac{f(x_i)}{f'(x_i)} \nonumber
+\end{align}
+
+Note that it might not converge.
+
+\section{Convergence Rate}
+
+Now we are going to prove that in some cases
+Newton's Method converges quicker than Bisection Method.
+
+Write root of $f$ as $r$ ($f(r)$ = 0).
+
+\begin{definition}
+  $\lim \frac{|x_{k+1} - r|}{|x_k - r|} = \delta < 1$
+  call linear convergence. 
+\end{definition}
+
+Notice that Bisection Method is linear convergence.
+
+\begin{definition}
+  $\lim \frac{|x_{k+1} - r|}{|x_k - r|^2} = \delta$
+  call quadratic convergence. 
+\end{definition}
+
+\subsection{Newton's Method : Quadratic Convergence}
+
+Assume $f$ satifiy that $f$ is continuous differientiable
+and $f'$ is Lipschitz continuous.
+
+\begin{theorem}
+  If ${x_k} \rightarrow x^*$ and $f'(x^*) \neq 0$, then
+  \begin{enumerate}
+    \item $f'(x^*) = 0$
+    \item $\exists L \geq 1$ s.t. $\forall k \geq L$
+    $ |x_{k+1} - x^*| \leq \delta |x_k - x^*|^2 $
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  \begin{align}
+    &e(x_{k+1}, x_k) \nonumber \\
+    &= f(x_{k+1}) - f(x_k) - f'(x_k)(x_{k+1} - x_k) \nonumber \\
+    &= \int_x^y f'(t) - f'(x) \mathrm{d}x \nonumber \\
+    &\leq \int_x^y \alpha |t - x| \mathrm{d}x \nonumber \\
+    &=\frac{1}{2} \alpha |y-x|^2 \nonumber
+  \end{align}
+  Since ${x_k}$ converge, $|f(x^*)| = \lim_{k \rightarrow \infty}|f(x_k)| = 0$.
+
+  Now define $\beta = |f'(x^*)^{-1}|$.
+  Since ${x_k}$ converge to $x^*$ and $f'$ continuous, $\exists k \geq L$,
+  such that $|f'(x_k)| \leq 2\beta$.
+  
+  By Newton's def,
+  \begin{align}
+    &|x_{k+1} - x^*| \nonumber \\
+    &= |x_k - x^* - \frac{f(x_k)}{f'(x_k)}| \nonumber \\
+    &= |x_k - x^* - \frac{-f'(x_k)(x^* - x_k) - e(x^*, x_k)}{f'(x_k)}| \nonumber \\ 
+    &= |f'(x_k)^{-1}||e(x^*, x_k)|
+    \leq 2\beta \frac{1}{2}\alpha |x_k - x^*|^2
+  \end{align}
+\end{proof}
