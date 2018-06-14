@@ -74,3 +74,41 @@ and $f'$ is Lipschitz continuous.
     \leq 2\beta \frac{1}{2}\alpha |x_k - x^*|^2
   \end{align}
 \end{proof}
+
+\subsection{Newtons Method for Multivariable and Multiequations}
+
+Consider $m$ equality and $n$ variable.
+
+When $m = n$, the newton method is ok.
+
+\[
+  x_{k+1} = x_k - J(x_k)^{-1}f(x_k) 
+\]
+
+When $m \neq n$, the jacobian matrix $J$ is not invertible,
+since it's not a square matrix.
+
+So we try to minimize $g(x) = |f(x)|^2$. In other words,
+we have to solve $\nabla g(x) = 0$. Notice that 
+$\nabla g$ is a square matrix, hence we can apply newton's method.
+
+\subsection{Fixed-Point Iteration}
+
+For example, when a equation system :
+
+\begin{align}
+  f_1(x_1, x_2) &= x_1^3 + 10x_1 - x_2 - 5 = 0 \nonumber \\
+  f_2(x_1, x_2) &= x_2^3 - 10x_2 + x_1 + 1 = 0 \nonumber
+\end{align}
+
+Convert to
+
+\begin{align}
+  x_1 &= g_1(x_1, x_2) = -0.1x_1^3 + 0.1x_2 + 0.5 \nonumber \\
+  x_2 &= g_2(x_1, x_2) = 0.1x_2^3 + 0.1x_1 + 0.1 \nonumber
+\end{align}
+
+\begin{theorem}
+  If $p$ is a fixed point of $g$, $|\nabla g(p)| < 1$ and $x_0$ is sufficiently close to p,
+  then algorithm $x_{k+1} = g(x_k)$ converge.
+\end{theorem}
