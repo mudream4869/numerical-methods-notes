@@ -1,0 +1,23 @@
+\section{Fit a Function}
+
+Given $(x_1, f(x_1)), . . . ,(x_n, f(x_n))$, find a
+function passing all of them
+
+\subsection{Lagrange}
+
+Let 
+
+\[
+  f(x) = \sum \prod_{j \neq i} \frac{x-x_j}{x_i-x_j}
+\]
+
+\subsection{Spline}
+
+The Lagrange has to high degree,
+so we try to use different cubic
+polynomials function between $x_i$ and $x_{i+1}$,
+but retaining $f'(x)$, $f''(x)$.
+
+\section{Function Approximation}
+
+We try to minimize $\sum (y_i-P(x_i))^2 $
