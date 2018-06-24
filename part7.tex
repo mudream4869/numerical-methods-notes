@@ -1,0 +1,70 @@
+\section{Continuous Least Square}
+
+\subsection{Polynomial}
+
+Given $f \in C[a, b]$,
+find a polynomial $P(x) = \arg\min \int_a^b (f(x) - P(x))^2$.
+To minimize this term, let $P(x) = \sum_{i=0}^n a_i x^i$
+and $E(P(x)) = \int_a^b (f(x)-P(x))^2$.
+
+\[
+  \frac{\delta E}{\delta a_i} =
+    -2 \int_a^b x^if(x) dx +
+     2 \sum_{j=0}^n a_j \int_a^b x^{i+j} dx
+  = 0
+\]
+
+It turns out to be $n+1$ linear equation.
+
+\subsection{Linear Independent and Orthoganol}
+
+Consider linear independent function set $\{\phi_i(x)\}_i$,
+such that $\int_a^b \phi_i(x)\phi_j(x)dx = 0$ if $i \neq j$.
+Then $\frac{\delta E}{\delta a_i} = 0$ could be reduce to
+
+\[
+  a_i \int_a^b \phi_i(x)^2dx =  \int_a^b f(x)\phi_i(x) dx
+\]
+
+\subsection{Trigonometric Polynomial Approximation}
+
+Use $\{ \phi_i(x)\}_{i=0...2n-1}$ s.t.
+
+\begin{align}
+  \phi_0(x) &= \frac{1}{2} \nonumber \\
+  \phi_k(x) &= \cos kx \ , k = 1 ... n \nonumber \\
+  \phi_{n+k}(x) &= \sin kx \ , k = 1 ... n-1 \nonumber
+\end{align}
+
+They are linear independent and orthoganol on $[-\pi, \pi]$,
+and we can approx $f \in C[-\pi, \pi]$ by $S_n$.
+
+\[
+  S_n(x) = \frac{a_0}{2} + a_n \cos nx + \sum_{i=0}^{n-1} a_k \cos kx + b_k \sin kx
+\]
+
+\subsection{Discrete Analog to Fourier Series}
+
+Since calculating integral is difficult,
+we try to consider a discrete set of function point.
+Consider $\{(x_i, y_i)\}_{i=0...2*m-1}$,
+$x = -\pi + \frac{j}{m}\pi$.
+
+Now we try to minimize
+
+\[
+  E = \sum_{i=0}^{2m-1} (y_i - S_n(x_i))^2
+\]
+
+Where $S_n$ has different form :
+
+\[
+  S_n(x) = \frac{a_0 + a_n \cos nx}{2} + \sum_{k=1}^{n-1} a_k \cos kx + \sum_{k=1}^{n-1} b_k \sin kx
+\]
+
+We can have
+
+\begin{align}
+  a_k &= \frac{1}{m}\sum_{j=0}^{2m-1} y_j \cos kx_j \nonumber \\
+  b_k &= \frac{1}{m}\sum_{j=0}^{2m-1} y_j \sin kx_j \nonumber
+\end{align}
