@@ -3,10 +3,5 @@
 *~
 *.~
 
-# === pdflatex ===
-
-*.log
-*.aux
-
 # hw folder
 hw/
